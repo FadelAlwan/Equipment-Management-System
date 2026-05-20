@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+from gui.add_asset_form import AddEquipmentForm
 from database.db_manager import (
     get_all_equipment,
     search_equipment,
@@ -115,7 +116,7 @@ class MainWindow:
             self.load_data()
 
     def open_add_form(self):
-        pass
+        AddEquipmentForm(self.root, self.load_data)
 
     def open_edit_form(self):
         pass
