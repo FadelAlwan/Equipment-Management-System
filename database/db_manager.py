@@ -6,20 +6,17 @@ def get_db_path():
     return os.path.join(base_dir, "equipment.db")
 
 def add_equipment(asset_tag, asset_type, brand, model, serial_number,
-                  status, assigned_to, department, purchase_date,
-                  warranty_expiry, specs, notes):
+                  status, assigned_to, department, purchase_date, specs):
 
     with sqlite3.connect(get_db_path()) as conn:
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO equipment (
                 asset_tag, asset_type, brand, model, serial_number,
-                status, assigned_to, department, purchase_date,
-                warranty_expiry, specs, notes
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                status, assigned_to, department, purchase_date, specs
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (asset_tag, asset_type, brand, model, serial_number,
-              status, assigned_to, department, purchase_date,
-              warranty_expiry, specs, notes))
+              status, assigned_to, department, purchase_date, specs))
         conn.commit()
 
 
@@ -48,33 +45,39 @@ def search_equipment(keyword):
 
 def update_equipment(equipment_id, asset_tag, asset_type, brand, model,
                      serial_number, status, assigned_to, department,
-                     purchase_date, warranty_expiry, specs, notes):
+                     purchase_date, specs):
 
     with sqlite3.connect(get_db_path()) as conn:
         cursor = conn.cursor()
         cursor.execute("""
             UPDATE equipment SET
-                asset_tag       = ?,
-                asset_type      = ?,
-                brand           = ?,
-                model           = ?,
-                serial_number   = ?,
-                status          = ?,
-                assigned_to     = ?,
-                department      = ?,
-                purchase_date   = ?,
-                warranty_expiry = ?,
-                specs           = ?,
-                notes           = ?
+                asset_tag     = ?,
+                asset_type    = ?,
+                brand         = ?,
+                model         = ?,
+                serial_number = ?,
+                status        = ?,
+                assigned_to   = ?,
+                department    = ?,
+                purchase_date = ?,
+                specs         = ?
             WHERE id = ?
         """, (asset_tag, asset_type, brand, model, serial_number,
               status, assigned_to, department, purchase_date,
-              warranty_expiry, specs, notes, equipment_id))
+              specs, equipment_id))
         conn.commit()
-
 
 def delete_equipment(equipment_id):
     with sqlite3.connect(get_db_path()) as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM equipment WHERE id = ?", (equipment_id,))
         conn.commit()
+        
+        
+        
+        
+def get_equipment_by_id(equipment_id):
+    with sqlite3.connect(get_db_path()) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM equipment WHERE id = ?", (equipment_id,))
+        return cursor.fetchone()

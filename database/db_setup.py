@@ -21,9 +21,7 @@ def create_database():
             assigned_to     TEXT,
             department      TEXT,
             purchase_date   TEXT,
-            warranty_expiry TEXT,
-            specs           TEXT,
-            notes           TEXT
+            specs           TEXT
         )
     """)
 
