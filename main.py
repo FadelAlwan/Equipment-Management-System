@@ -1,5 +1,9 @@
+import tkinter as tk
 from database.db_setup import create_database
-from database.db_manager import add_equipment, get_all_equipment
+from gui.main_window import MainWindow
 
 if __name__ == "__main__":
     create_database()
+    root = tk.Tk()
+    app = MainWindow(root)
+    root.mainloop()
