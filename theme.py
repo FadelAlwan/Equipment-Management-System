@@ -6,7 +6,7 @@ COLORS = {
 
     # Accent colors
     "primary": "#0e639c",
-    "success": "#4ec9b0",
+    "success": "#2ea043",
     "danger": "#f14c4c",
     "warning": "#1D6F42",
 
