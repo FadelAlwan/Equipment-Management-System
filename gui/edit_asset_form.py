@@ -68,9 +68,8 @@ class EditEquipmentForm:
             ("Brand",                     "brand",          self.data[3]),
             ("Model",                     "model",          self.data[4]),
             ("Serial Number",             "serial_number",  self.data[5]),
-            ("Assigned To",               "assigned_to",    self.data[7]),
-            ("Purchase Date (YYYY-MM-DD)","purchase_date",  self.data[9]),
-            ("Specs",                     "specs",          self.data[10]),
+            ("Purchase Date (YYYY-MM-DD)","purchase_date",  self.data[8]),
+            ("Specs",                     "specs",          self.data[9]),
         ]:
             make_label(label)
             self.entries[key] = make_entry(value)
@@ -84,8 +83,8 @@ class EditEquipmentForm:
         ).pack(fill="x")
 
         # Department dropdown
-        make_label("Department")
-        current_dept = self.data[8] if self.data[8] in DEPARTMENTS else DEPARTMENTS[0]
+        make_label("Assigned Department")
+        current_dept = self.data[7] if self.data[7] in DEPARTMENTS else DEPARTMENTS[0]
         self.dept_var = tk.StringVar(value=current_dept)
         ttk.OptionMenu(
             container, self.dept_var,
@@ -118,7 +117,6 @@ class EditEquipmentForm:
                 self.entries["model"].get().strip(),
                 self.entries["serial_number"].get().strip(),
                 self.status_var.get(),
-                self.entries["assigned_to"].get().strip(),
                 self.dept_var.get(),
                 self.entries["purchase_date"].get().strip(),
                 self.entries["specs"].get().strip(),

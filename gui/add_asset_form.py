@@ -60,7 +60,6 @@ class AddEquipmentForm:
             ("Brand",                    "brand"),
             ("Model",                    "model"),
             ("Serial Number",            "serial_number"),
-            ("Assigned To",              "assigned_to"),
             ("Purchase Date (YYYY-MM-DD)", "purchase_date"),
             ("Specs",                    "specs"),
         ]:
@@ -76,7 +75,7 @@ class AddEquipmentForm:
         ).pack(fill="x")
 
         # Department dropdown
-        make_label("Department")
+        make_label("Assigned Department")
         self.dept_var = tk.StringVar(value=DEPARTMENTS[0])
         ttk.OptionMenu(
             container, self.dept_var,
@@ -108,7 +107,6 @@ class AddEquipmentForm:
                 self.entries["model"].get().strip(),
                 self.entries["serial_number"].get().strip(),
                 self.status_var.get(),
-                self.entries["assigned_to"].get().strip(),
                 self.dept_var.get(),
                 self.entries["purchase_date"].get().strip(),
                 self.entries["specs"].get().strip(),

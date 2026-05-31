@@ -6,17 +6,17 @@ def get_db_path():
     return os.path.join(base_dir, "equipment.db")
 
 def add_equipment(asset_tag, asset_type, brand, model, serial_number,
-                  status, assigned_to, department, purchase_date, specs):
+                  status, assigned_department, purchase_date, specs):
 
     with sqlite3.connect(get_db_path()) as conn:
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO equipment (
                 asset_tag, asset_type, brand, model, serial_number,
-                status, assigned_to, department, purchase_date, specs
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                status, assigned_to, purchase_date, specs
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (asset_tag, asset_type, brand, model, serial_number,
-              status, assigned_to, department, purchase_date, specs))
+              status, assigned_department, purchase_date, specs))
         conn.commit()
 
 
@@ -36,16 +36,14 @@ def search_equipment(keyword):
             OR asset_type LIKE ?
             OR brand LIKE ?
             OR assigned_to LIKE ?
-            OR department LIKE ?
             OR status LIKE ?
         """, (search_term, search_term, search_term,
-              search_term, search_term, search_term))
+              search_term, search_term))
         return cursor.fetchall()
     
 
 def update_equipment(equipment_id, asset_tag, asset_type, brand, model,
-                     serial_number, status, assigned_to, department,
-                     purchase_date, specs):
+                     serial_number, status, assigned_department, purchase_date, specs):
 
     with sqlite3.connect(get_db_path()) as conn:
         cursor = conn.cursor()
@@ -58,12 +56,11 @@ def update_equipment(equipment_id, asset_tag, asset_type, brand, model,
                 serial_number = ?,
                 status        = ?,
                 assigned_to   = ?,
-                department    = ?,
                 purchase_date = ?,
                 specs         = ?
             WHERE id = ?
         """, (asset_tag, asset_type, brand, model, serial_number,
-              status, assigned_to, department, purchase_date,
+              status, assigned_department, purchase_date,
               specs, equipment_id))
         conn.commit()
 

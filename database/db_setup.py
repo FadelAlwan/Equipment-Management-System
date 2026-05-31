@@ -18,8 +18,7 @@ def create_database():
             model           TEXT,
             serial_number   TEXT,
             status          TEXT DEFAULT 'Active',
-            assigned_to     TEXT,
-            department      TEXT,
+            assigned_to      TEXT,
             purchase_date   TEXT,
             specs           TEXT
         )

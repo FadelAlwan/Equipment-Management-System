@@ -102,7 +102,7 @@ class MainWindow:
         frame.pack(fill="both", expand=True, padx=15, pady=10)
 
         columns = ("ID", "Tag", "Type", "Brand", "Model",
-                   "Status", "Assigned To", "Department", "Purchase Date", "Specs")
+                   "Status", "Assigned Department", "Purchase Date", "Specs")
 
         style = ttk.Style()
         style.theme_use("clam")
@@ -125,8 +125,8 @@ class MainWindow:
 
         col_widths = {
             "ID": 40, "Tag": 90, "Type": 90, "Brand": 90,
-            "Model": 110, "Status": 90, "Assigned To": 110,
-            "Department": 110, "Purchase Date": 110, "Specs": 160
+            "Model": 110, "Status": 90, "Assigned Department": 140,
+            "Purchase Date": 110, "Specs": 160
         }
 
         for col in columns:
@@ -153,10 +153,9 @@ class MainWindow:
                 row[3],   # brand
                 row[4],   # model
                 row[6],   # status
-                row[7],   # assigned_to
-                row[8],   # department
-                row[9],   # purchase_date
-                row[10],  # specs
+                row[7],   # assigned_department
+                row[8],   # purchase_date
+                row[9],  # specs
             ))
 
     def perform_search(self):
