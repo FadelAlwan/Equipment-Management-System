@@ -76,7 +76,7 @@ class AddEquipmentForm:
         ).pack(fill="x")
 
         # Department dropdown
-        make_label("Assigned Department")
+        make_label("Department")
         self.dept_var = tk.StringVar(value=DEPARTMENTS[0])
         ttk.OptionMenu(
             container, self.dept_var,

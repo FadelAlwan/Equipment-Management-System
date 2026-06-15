@@ -41,6 +41,17 @@ def search_equipment(keyword):
               search_term, search_term))
         return cursor.fetchall()
     
+def filter_by_status(status):
+    with sqlite3.connect(get_db_path()) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT * FROM equipment WHERE status = ? ORDER BY id DESC",
+            (status,)
+        )
+
+        return cursor.fetchall()
+    
 
 def update_equipment(equipment_id, asset_tag, asset_type, brand, model,
                      serial_number, status, assigned_department, purchase_date, specs):

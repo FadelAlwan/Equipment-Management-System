@@ -84,7 +84,7 @@ class EditEquipmentForm:
         ).pack(fill="x")
 
         # Department dropdown
-        make_label("Assigned Department")
+        make_label("Department")
         current_dept = self.data[7] if self.data[7] in DEPARTMENTS else DEPARTMENTS[0]
         self.dept_var = tk.StringVar(value=current_dept)
         ttk.OptionMenu(

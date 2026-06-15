@@ -5,7 +5,8 @@ from database.db_manager import (
     get_all_equipment,
     search_equipment,
     delete_equipment,
-    get_statistics
+    get_statistics,
+    filter_by_status
 )
 from theme import COLORS
 
@@ -147,13 +148,26 @@ class MainWindow:
             cursor="hand2"
         ).pack(side="left", padx=3, ipady=4)
 
-        tk.Button(
-            frame, text="Clear",
-            command=self.clear_search,
-            bg=COLORS["surface"], fg=COLORS["text"],
-            relief="flat", font=("Segoe UI", 10),
-            cursor="hand2"
-        ).pack(side="left", ipady=4)
+        tk.Label(
+            frame,
+            text="Status:",
+            bg=COLORS["bg"],
+            fg=COLORS["text"],
+            font=("Segoe UI", 10)
+        ).pack(side="left", padx=(15, 5))
+        
+        self.status_filter = tk.StringVar(value="All")
+
+        ttk.OptionMenu(
+            frame,
+            self.status_filter,
+            "All",
+            "All",
+            "Active",
+            "Maintenance",
+            "In Storage",
+            command=self.apply_status_filter
+        ).pack(side="left")
 
     def setup_buttons(self):
         frame = tk.Frame(self.root, bg=COLORS["bg"], pady=5)
@@ -181,7 +195,7 @@ class MainWindow:
         frame = tk.Frame(self.root, bg=COLORS["bg"])
         frame.pack(fill="both", expand=True, padx=15, pady=10)
 
-        columns = ("ID", "Tag", "Type", "Brand", "Model", "Serial Number", "Status", "Assigned Department", "Purchase Date", "Specs")
+        columns = ("ID", "Tag", "Type", "Brand", "Model", "Serial Number", "Status", "Department", "Purchase Date", "Specs")
 
         style = ttk.Style()
         style.theme_use("clam")
@@ -204,7 +218,7 @@ class MainWindow:
 
         col_widths = {
             "ID": 40, "Tag": 90, "Type": 90, "Brand": 90,
-            "Model": 110, "Status": 90, "Assigned Department": 140,
+            "Model": 110, "Status": 90, "Department": 140,
             "Purchase Date": 110, "Specs": 160
         }
 
@@ -245,9 +259,12 @@ class MainWindow:
             results = search_equipment(keyword)
             self.load_data(results)
 
-    def clear_search(self):
-        self.search_var.set("")
-        self.load_data()
+    def apply_status_filter(self, selected_status):
+        if selected_status == "All":
+            self.load_data()
+        else:
+            rows = filter_by_status(selected_status)
+            self.load_data(rows)
 
     def get_selected_id(self):
         selected = self.table.selection()
@@ -288,7 +305,7 @@ class MainWindow:
         
         columns = [
             "ID", "Asset Tag", "Type", "Brand", "Model",
-            "Serial Number", "Status", "Assigned Department",
+            "Serial Number", "Status", "Department",
             "Purchase Date", "Specs"
         ]
 
