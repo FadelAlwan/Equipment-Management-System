@@ -4,7 +4,8 @@ from tkinter import ttk, messagebox, filedialog
 from database.db_manager import (
     get_all_equipment,
     search_equipment,
-    delete_equipment
+    delete_equipment,
+    get_statistics
 )
 from theme import COLORS
 
@@ -18,6 +19,7 @@ class MainWindow:
         self.root.configure(bg=COLORS["bg"])
 
         self.setup_header()
+        self.setup_dashboard()
         self.setup_search_bar()
         self.setup_buttons()
         self.setup_table()
@@ -33,6 +35,83 @@ class MainWindow:
             bg=COLORS["primary"],
             fg="white"
         ).pack(side="left", padx=20)
+    
+    def setup_dashboard(self):
+        frame = tk.Frame(self.root, bg=COLORS["bg"])
+        frame.pack(fill="x", padx=15, pady=(10, 5))
+
+        self.total_label = self.create_stat_card(
+            frame, "Total Assets", COLORS["primary"]
+        )
+
+        self.active_label = self.create_stat_card(
+            frame, "Active", COLORS["success"]
+        )
+
+        self.maintenance_label = self.create_stat_card(
+            frame, "Maintenance", "#d4a017"
+        )
+
+        self.storage_label = self.create_stat_card(
+            frame, "In Storage", COLORS["surface_light"]
+        )
+
+        self.refresh_dashboard()
+    
+    def create_stat_card(self, parent, title, color):
+        card = tk.Frame(
+            parent,
+            bg=color,
+            padx=15,
+            pady=10
+        )
+
+        card.pack(
+            side="left",
+            expand=True,
+            fill="x",
+            padx=5
+        )
+
+        tk.Label(
+            card,
+            text=title,
+            bg=color,
+            fg="white",
+            font=("Segoe UI", 10)
+        ).pack()
+
+        value_label = tk.Label(
+            card,
+            text="0",
+            bg=color,
+            fg="white",
+            font=("Segoe UI", 16, "bold")
+        )
+
+        value_label.pack()
+
+        return value_label
+    
+    def refresh_dashboard(self):
+        stats = get_statistics()
+
+        self.total_label.config(
+            text=str(stats["total"])
+        )
+
+        self.active_label.config(
+            text=str(stats["active"])
+        )
+
+        self.maintenance_label.config(
+            text=str(stats["maintenance"])
+        )
+
+        self.storage_label.config(
+            text=str(stats["storage"])
+        )
+    
 
     def setup_search_bar(self):
         frame = tk.Frame(self.root, bg=COLORS["bg"], pady=8)
@@ -158,6 +237,7 @@ class MainWindow:
                 row[8],   # purchase_date
                 row[9],  # specs
             ))
+        self.refresh_dashboard()
 
     def perform_search(self):
         keyword = self.search_var.get().strip()

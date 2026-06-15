@@ -78,3 +78,33 @@ def get_equipment_by_id(equipment_id):
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM equipment WHERE id = ?", (equipment_id,))
         return cursor.fetchone()
+    
+
+def get_statistics():
+    with sqlite3.connect(get_db_path()) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT COUNT(*) FROM equipment")
+        total = cursor.fetchone()[0]
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM equipment WHERE status='Active'"
+        )
+        active = cursor.fetchone()[0]
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM equipment WHERE status='Maintenance'"
+        )
+        maintenance = cursor.fetchone()[0]
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM equipment WHERE status='In Storage'"
+        )
+        storage = cursor.fetchone()[0]
+
+        return {
+            "total": total,
+            "active": active,
+            "maintenance": maintenance,
+            "storage": storage
+        }
