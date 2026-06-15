@@ -9,6 +9,9 @@ from database.db_manager import (
     filter_by_status
 )
 from theme import COLORS
+from openpyxl.worksheet.table import Table
+from openpyxl.worksheet.table import TableStyleInfo
+from openpyxl.styles import PatternFill, Font
 
 
 
@@ -324,7 +327,95 @@ class MainWindow:
             return  
 
         try:
-            df.to_excel(file_path, index=False)
-            messagebox.showinfo("Success", f"Data exported successfully to:\n{file_path}")
+            with pd.ExcelWriter(
+                file_path,
+                engine="openpyxl"
+            ) as writer:
+
+                df.to_excel(
+                    writer,
+                    index=False,
+                    sheet_name="Equipment"
+                )
+
+                workbook = writer.book
+                worksheet = writer.sheets["Equipment"]
+                
+                worksheet.insert_rows(1)
+                worksheet["A1"] = "IT Equipment Report"
+                
+                worksheet["A1"].font = Font(
+                    size=16,
+                    bold=True
+                )
+
+                table = Table(
+                    displayName="EquipmentTable",
+                    ref=f"A2:J{worksheet.max_row}"
+                )
+
+                style = TableStyleInfo(
+                    name="TableStyleMedium2",
+                    showFirstColumn=False,
+                    showLastColumn=False,
+                    showRowStripes=True,
+                    showColumnStripes=False
+                )
+
+                table.tableStyleInfo = style
+                worksheet.add_table(table)
+            
+                for column in worksheet.columns:
+                    max_length = 0
+                    column_letter = column[0].column_letter
+
+                    for cell in column:
+                        try:
+                            if len(str(cell.value)) > max_length:
+                                max_length = len(str(cell.value))
+                        except:
+                            pass
+
+                    worksheet.column_dimensions[column_letter].width = max_length + 3
+                worksheet.freeze_panes = "A3"
+                green_fill = PatternFill(
+                    start_color="C6EFCE",
+                    end_color="C6EFCE",
+                    fill_type="solid"
+                )
+
+                yellow_fill = PatternFill(
+                    start_color="FFEB9C",
+                    end_color="FFEB9C",
+                    fill_type="solid"
+                )
+
+                red_fill = PatternFill(
+                    start_color="FFC7CE",
+                    end_color="FFC7CE",
+                    fill_type="solid"
+                )
+
+                for row in range(3, worksheet.max_row + 1):
+
+                    status_cell = worksheet[f"G{row}"]
+
+                    if status_cell.value == "Active":
+                        status_cell.fill = green_fill
+
+                    elif status_cell.value == "Maintenance":
+                        status_cell.fill = yellow_fill
+
+                    elif status_cell.value == "Inactive":
+                        status_cell.fill = red_fill
+
+            messagebox.showinfo(
+                "Success",
+                f"Data exported successfully to:\n{file_path}"
+            )
+
         except Exception as e:
-            messagebox.showerror("Error", f"Could not export file.\n{e}")
+            messagebox.showerror(
+                "Error",
+                f"Could not export file.\n{e}"
+            )
