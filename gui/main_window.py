@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+import pandas as pd
+from tkinter import ttk, messagebox, filedialog
 from database.db_manager import (
     get_all_equipment,
     search_equipment,
@@ -101,8 +102,7 @@ class MainWindow:
         frame = tk.Frame(self.root, bg=COLORS["bg"])
         frame.pack(fill="both", expand=True, padx=15, pady=10)
 
-        columns = ("ID", "Tag", "Type", "Brand", "Model",
-                   "Status", "Assigned Department", "Purchase Date", "Specs")
+        columns = ("ID", "Tag", "Type", "Brand", "Model", "Serial Number", "Status", "Assigned Department", "Purchase Date", "Specs")
 
         style = ttk.Style()
         style.theme_use("clam")
@@ -152,6 +152,7 @@ class MainWindow:
                 row[2],   # asset_type
                 row[3],   # brand
                 row[4],   # model
+                row[5],   # serial_number
                 row[6],   # status
                 row[7],   # assigned_department
                 row[8],   # purchase_date
@@ -199,4 +200,34 @@ class MainWindow:
         EditEquipmentForm(self.root, equipment_id, self.load_data)
 
     def export_to_excel(self):
-        pass
+        rows = get_all_equipment()
+
+        if not rows:
+            messagebox.showwarning("No Data", "There is no equipment to export Please add some equipment first.")
+            return
+        
+        columns = [
+            "ID", "Asset Tag", "Type", "Brand", "Model",
+            "Serial Number", "Status", "Assigned Department",
+            "Purchase Date", "Specs"
+        ]
+
+        
+        df = pd.DataFrame(rows, columns=columns)
+
+        
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".xlsx",
+            filetypes=[("Excel files", "*.xlsx")],
+            initialfile="equipment_report.xlsx",
+            title="Save Excel Report"
+        )
+
+        if not file_path:
+            return  
+
+        try:
+            df.to_excel(file_path, index=False)
+            messagebox.showinfo("Success", f"Data exported successfully to:\n{file_path}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Could not export file.\n{e}")

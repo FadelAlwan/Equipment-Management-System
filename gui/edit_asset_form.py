@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from database.db_manager import update_equipment, get_equipment_by_id
 from theme import COLORS
+import sqlite3
 
 
 DEPARTMENTS = [
@@ -79,7 +80,7 @@ class EditEquipmentForm:
         self.status_var = tk.StringVar(value=self.data[6])
         ttk.OptionMenu(
             container, self.status_var,
-            self.data[6], "Active", "Active", "Maintenance", "In Storage"
+            self.data[6], "Active", "Maintenance", "In Storage"
         ).pack(fill="x")
 
         # Department dropdown
@@ -124,5 +125,14 @@ class EditEquipmentForm:
             messagebox.showinfo("Success", "Equipment updated successfully.")
             self.on_save_callback()
             self.window.destroy()
+        except sqlite3.IntegrityError:
+            messagebox.showerror(
+                "Duplicate Asset Tag",
+                "This Asset Tag already exists. Please use a unique Asset Tag."
+            )
         except Exception as e:
-            messagebox.showerror("Error", f"Could not update.\n{e}")
+
+            messagebox.showerror(
+                "Error",
+                f"Could not update.\n{e}"
+            )

@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from database.db_manager import add_equipment
 from theme import COLORS
+import sqlite3
 
 
 DEPARTMENTS = [
@@ -114,5 +115,14 @@ class AddEquipmentForm:
             messagebox.showinfo("Success", "Equipment added successfully.")
             self.on_save_callback()
             self.window.destroy()
+        except sqlite3.IntegrityError:
+            messagebox.showerror(
+                "Duplicate Asset Tag",
+                "This Asset Tag already exists. Please use a unique Asset Tag."
+        )
+
         except Exception as e:
-            messagebox.showerror("Error", f"Could not save.\n{e}")
+            messagebox.showerror(
+                "Error",
+                f"Could not save.\n{e}"
+            )
