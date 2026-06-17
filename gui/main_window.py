@@ -36,7 +36,7 @@ class MainWindow:
             fg_color=COLORS["sidebar_bg"]
         )
         self.sidebar.pack(side="left", fill="y")
-        self.sidebar.pack_propagate(False)  # keeps fixed width
+        self.sidebar.pack_propagate(False)  
 
         self.main = ctk.CTkFrame(
             self.root,

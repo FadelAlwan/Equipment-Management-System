@@ -3,6 +3,7 @@ import customtkinter as ctk
 from tkinter import ttk, messagebox
 from database.db_manager import update_equipment, get_equipment_by_id
 from theme import COLORS
+from tkcalendar import Calendar
 import sqlite3
 
 
@@ -70,11 +71,39 @@ class EditEquipmentForm:
             ("Brand",                     "brand",          self.data[3]),
             ("Model",                     "model",          self.data[4]),
             ("Serial Number",             "serial_number",  self.data[5]),
-            ("Purchase Date (YYYY-MM-DD)","purchase_date",  self.data[8]),
             ("Specs",                     "specs",          self.data[9]),
         ]:
             make_label(label)
             self.entries[key] = make_entry(value)
+            
+            
+        make_label("Purchase Date")
+
+        self.purchase_date_var = tk.StringVar(
+            value=self.data[8] if self.data[8] else ""
+        )
+
+        date_frame = ctk.CTkFrame(container, fg_color="transparent")
+        date_frame.pack(fill="x")
+
+        ctk.CTkEntry(
+            date_frame,
+            textvariable=self.purchase_date_var,
+            state="readonly",
+            fg_color=COLORS["entry_bg"],
+            text_color=COLORS["text"],
+            border_color=COLORS["border"],
+            font=ctk.CTkFont("Segoe UI", 10)
+        ).pack(side="left", fill="x", expand=True, ipady=3)
+
+        ctk.CTkButton(
+            date_frame,
+            text="📅",
+            width=40,
+            fg_color=COLORS["primary"],
+            hover_color=COLORS["primary_hover"],
+            command=self.open_calendar
+        ).pack(side="left", padx=(5, 0))
 
         make_label("Status")
         self.status_var = tk.StringVar(value=self.data[6])
@@ -98,6 +127,44 @@ class EditEquipmentForm:
             relief="flat", font=("Segoe UI", 11, "bold"),
             cursor="hand2"
         ).pack(fill="x", pady=20, ipady=8)
+        
+        
+    def open_calendar(self):
+        top = ctk.CTkToplevel(self.window)
+        top.title("Select Date")
+        top.geometry("300x320")
+        top.resizable(False, False)
+        top.grab_set()
+
+        cal = Calendar(
+            top,
+            selectmode="day",
+            date_pattern="yyyy-mm-dd",
+            background="#2d2d2d",
+            foreground="white",
+            headersbackground="#0085D0",
+            headersforeground="white",
+            selectbackground="#0085D0",
+            normalbackground="#2d2d2d",
+            normalforeground="white",
+            weekendbackground="#2d2d2d",
+            weekendforeground="#aaaaaa",
+            othermonthbackground="#252526",
+            othermonthforeground="#666666",
+        )
+        cal.pack(padx=10, pady=10, fill="both", expand=True)
+
+        def confirm():
+            self.purchase_date_var.set(cal.get_date())
+            top.destroy()
+
+        ctk.CTkButton(
+            top,
+            text="Select",
+            fg_color="#0085D0",
+            hover_color="#006dab",
+            command=confirm
+        ).pack(pady=(0, 10), padx=20, fill="x")
 
     def save(self):
         asset_tag  = self.entries["asset_tag"].get().strip()
@@ -118,7 +185,7 @@ class EditEquipmentForm:
                 self.entries["serial_number"].get().strip(),
                 self.status_var.get(),
                 self.dept_var.get(),
-                self.entries["purchase_date"].get().strip(),
+                self.purchase_date_var.get(),
                 self.entries["specs"].get().strip(),
             )
             messagebox.showinfo("Success", "Equipment updated successfully.")
