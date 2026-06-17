@@ -1,11 +1,9 @@
 COLORS = {
     "sidebar_bg":     "#151515",
     "sidebar_hover":  "#2a2a2a",
-    "sidebar_active": "#0085D0",
     "bg":             "#1e1e1e",
     "surface":        "#252526",
     "surface_light":  "#2d2d2d",
-    "card_bg":        "#2d2d2d",
     "primary":        "#0085D0",
     "primary_hover":  "#006dab",
     "success":        "#2ea043",

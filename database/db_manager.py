@@ -82,8 +82,6 @@ def delete_equipment(equipment_id):
         conn.commit()
         
         
-        
-        
 def get_equipment_by_id(equipment_id):
     with sqlite3.connect(get_db_path()) as conn:
         cursor = conn.cursor()
@@ -94,28 +92,18 @@ def get_equipment_by_id(equipment_id):
 def get_statistics():
     with sqlite3.connect(get_db_path()) as conn:
         cursor = conn.cursor()
-
-        cursor.execute("SELECT COUNT(*) FROM equipment")
-        total = cursor.fetchone()[0]
-
-        cursor.execute(
-            "SELECT COUNT(*) FROM equipment WHERE status='Active'"
-        )
-        active = cursor.fetchone()[0]
-
-        cursor.execute(
-            "SELECT COUNT(*) FROM equipment WHERE status='Maintenance'"
-        )
-        maintenance = cursor.fetchone()[0]
-
-        cursor.execute(
-            "SELECT COUNT(*) FROM equipment WHERE status='In Storage'"
-        )
-        storage = cursor.fetchone()[0]
-
+        cursor.execute("""
+            SELECT
+                COUNT(*),
+                SUM(CASE WHEN status='Active' THEN 1 ELSE 0 END),
+                SUM(CASE WHEN status='Maintenance' THEN 1 ELSE 0 END),
+                SUM(CASE WHEN status='In Storage' THEN 1 ELSE 0 END)
+            FROM equipment
+        """)
+        row = cursor.fetchone()
         return {
-            "total": total,
-            "active": active,
-            "maintenance": maintenance,
-            "storage": storage
+            "total":       row[0] or 0,
+            "active":      row[1] or 0,
+            "maintenance": row[2] or 0,
+            "storage":     row[3] or 0,
         }

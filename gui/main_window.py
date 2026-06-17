@@ -21,8 +21,6 @@ class MainWindow:
         self.root.geometry("1280x720")
         self.root.configure(fg_color=COLORS["bg"])
 
-        self.active_section = "equipment"
-
         self.setup_layout()
         self.setup_sidebar()
         self.setup_main_area()
@@ -118,7 +116,6 @@ class MainWindow:
 
     def navigate(self, section):
         self.set_active_nav(section)
-        self.active_section = section
 
         if section == "add":
             self.open_add_form()
@@ -533,8 +530,6 @@ class MainWindow:
             )
         except Exception as e:
             messagebox.showerror("Error", f"Export failed.\n{e}")
-            
-            
             
     def sort_column(self, col, reverse):
         rows = [
