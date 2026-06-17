@@ -98,7 +98,7 @@ class MainWindow:
 
         ctk.CTkLabel(
             self.sidebar,
-            text="v1.0  •  Internship Project",
+            text="v1.0  • © 2026",
             font=ctk.CTkFont("Segoe UI", 10),
             text_color=COLORS["text_dim"]
         ).pack(side="bottom", pady=15)
@@ -383,7 +383,11 @@ class MainWindow:
             side="left", fill="both",
             expand=True, padx=(15, 0), pady=10
         )
+        self.table.bind("<Double-1>", self.on_double_click)
         scrollbar.pack(side="right", fill="y", pady=10, padx=(0, 5))
+        
+    def on_double_click(self, event):
+        self.open_edit_form()
 
 
     def load_data(self, data=None):
