@@ -18,7 +18,7 @@ class AddEquipmentForm:
         self.window = ctk.CTkToplevel(parent)
         self.window.after(200, self.window.lift)
         self.window.title("Add New Equipment")
-        self.window.geometry("480x730")
+        self.window.geometry("480x780")
         self.window.resizable(True, True)
         self.window.configure(fg_color=COLORS["bg"])
 
@@ -27,17 +27,17 @@ class AddEquipmentForm:
 
     def setup_header(self):
         ctk.CTkFrame(self.window, fg_color=COLORS["primary"], height=5, corner_radius=0).pack(fill="x")
-        ctk.CTkLabel(self.window,text="Add New Equipment",font=ctk.CTkFont("Segoe UI", 13, "bold"),fg_color=COLORS["bg"], text_color=COLORS["primary"]).pack(pady=(15, 5))
+        ctk.CTkLabel(self.window,text="Add New Equipment",font=("Segoe UI", 13, "bold"),fg_color=COLORS["bg"], text_color=COLORS["primary"]).pack(pady=(15, 5))
 
     def setup_form(self):
-        container = ctk.CTkFrame(self.window, fg_color=COLORS["bg"])
+        container = ctk.CTkScrollableFrame(self.window, fg_color=COLORS["bg"])
         container.pack(fill="both", expand=True, padx=30)
 
         def make_label(text):
-            ctk.CTkLabel(container, text=text,fg_color="transparent", text_color=COLORS["text"],font=ctk.CTkFont("Segoe UI", 9), anchor="w").pack(fill="x", pady=(8, 1))
+            ctk.CTkLabel(container, text=text,fg_color="transparent", text_color=COLORS["text"],font=ctk.CTkFont("Segoe UI", 11), anchor="w").pack(fill="x", pady=(8, 1))
 
         def make_entry():
-            e = ctk.CTkEntry(container, fg_color=COLORS["entry_bg"], text_color=COLORS["text"],border_color=COLORS["border"], font=ctk.CTkFont("Segoe UI", 10))
+            e = ctk.CTkEntry(container, fg_color=COLORS["entry_bg"], text_color=COLORS["text"],border_color=COLORS["border"], font=ctk.CTkFont("Segoe UI", 12))
             e.pack(fill="x", ipady=5)
             return e
 
@@ -69,7 +69,7 @@ class AddEquipmentForm:
             fg_color=COLORS["entry_bg"],
             text_color=COLORS["text"],
             border_color=COLORS["border"],
-            font=ctk.CTkFont("Segoe UI", 10)
+            font=ctk.CTkFont("Segoe UI", 12)
         ).pack(side="left", fill="x", expand=True, ipady=3)
 
         ctk.CTkButton(
@@ -91,7 +91,7 @@ class AddEquipmentForm:
             button_color=COLORS["primary"],
             button_hover_color=COLORS["primary_hover"],
             text_color=COLORS["text"],
-            font=ctk.CTkFont("Segoe UI", 10)
+            font=ctk.CTkFont("Segoe UI", 12)
         ).pack(fill="x", pady=(0, 4))
 
         make_label("Department")
@@ -104,12 +104,12 @@ class AddEquipmentForm:
             button_color=COLORS["primary"],
             button_hover_color=COLORS["primary_hover"],
             text_color=COLORS["text"],
-            font=ctk.CTkFont("Segoe UI", 10)
+            font=ctk.CTkFont("Segoe UI", 12)
         ).pack(fill="x", pady=(0, 4))
 
         ctk.CTkButton(container, text="Save Equipment",command=self.save,fg_color=COLORS["primary"], text_color="white",
               hover_color=COLORS["primary_hover"],
-              font=ctk.CTkFont("Segoe UI", 11, "bold")).pack(fill="x", pady=20, ipady=8)
+              font=ctk.CTkFont("Segoe UI", 13, "bold")).pack(fill="x", pady=20, ipady=8)
 
     def open_calendar(self):
         top = ctk.CTkToplevel(self.window)

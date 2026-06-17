@@ -23,7 +23,7 @@ class EditEquipmentForm:
         self.window = ctk.CTkToplevel(parent)
         self.window.after(200, self.window.lift)
         self.window.title("Edit Equipment")
-        self.window.geometry("480x730")
+        self.window.geometry("480x780")
         self.window.resizable(True, True)
         self.window.configure(fg_color=COLORS["bg"])
 
@@ -39,10 +39,10 @@ class EditEquipmentForm:
         container.pack(fill="both", expand=True, padx=30)
 
         def make_label(text):
-            ctk.CTkLabel(container, text=text,fg_color="transparent", text_color=COLORS["text"],font=ctk.CTkFont("Segoe UI", 9), anchor="w").pack(fill="x", pady=(8, 1))
+            ctk.CTkLabel(container, text=text,fg_color="transparent", text_color=COLORS["text"],font=ctk.CTkFont("Segoe UI", 11), anchor="w").pack(fill="x", pady=(8, 1))
 
         def make_entry(value=""):
-            e = ctk.CTkEntry(container, fg_color=COLORS["entry_bg"], text_color=COLORS["text"],border_color=COLORS["border"], font=ctk.CTkFont("Segoe UI", 10))
+            e = ctk.CTkEntry(container, fg_color=COLORS["entry_bg"], text_color=COLORS["text"],border_color=COLORS["border"], font=ctk.CTkFont("Segoe UI", 12))
             e.pack(fill="x", ipady=5)
             if value:
                 e.insert(0, str(value))
@@ -76,7 +76,7 @@ class EditEquipmentForm:
             fg_color=COLORS["entry_bg"],
             text_color=COLORS["text"],
             border_color=COLORS["border"],
-            font=ctk.CTkFont("Segoe UI", 10)
+            font=ctk.CTkFont("Segoe UI", 12)
         ).pack(side="left", fill="x", expand=True, ipady=3)
 
         ctk.CTkButton(
@@ -98,7 +98,7 @@ class EditEquipmentForm:
             button_color=COLORS["primary"],
             button_hover_color=COLORS["primary_hover"],
             text_color=COLORS["text"],
-            font=ctk.CTkFont("Segoe UI", 10)
+            font=ctk.CTkFont("Segoe UI", 12)
         ).pack(fill="x", pady=(0, 4))
 
         make_label("Department")
@@ -112,13 +112,13 @@ class EditEquipmentForm:
             button_color=COLORS["primary"],
             button_hover_color=COLORS["primary_hover"],
             text_color=COLORS["text"],
-            font=ctk.CTkFont("Segoe UI", 10)
+            font=ctk.CTkFont("Segoe UI", 12)
         ).pack(fill="x", pady=(0, 4))
 
         ctk.CTkButton(
             container, text="Update Equipment",
             command=self.save,
-            fg_color=COLORS["primary"], text_color="white",hover_color=COLORS["primary_hover"],font=ctk.CTkFont("Segoe UI", 11, "bold")).pack(fill="x", pady=20, ipady=8)
+            fg_color=COLORS["primary"], text_color="white",hover_color=COLORS["primary_hover"],font=ctk.CTkFont("Segoe UI", 13, "bold")).pack(fill="x", pady=20, ipady=8)
         
         
     def open_calendar(self):
