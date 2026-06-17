@@ -356,7 +356,11 @@ class MainWindow:
         }
 
         for col in columns:
-            self.table.heading(col, text=col)
+            self.table.heading(
+                col,
+                text=col,
+                command=lambda c=col: self.sort_column(c, False)
+            )
             self.table.column(
                 col,
                 width=col_widths.get(col, 100),
@@ -387,7 +391,9 @@ class MainWindow:
         scrollbar.pack(side="right", fill="y", pady=10, padx=(0, 5))
         
     def on_double_click(self, event):
-        self.open_edit_form()
+        region = self.table.identify_region(event.x, event.y)
+        if region == "cell":
+            self.open_edit_form()
 
 
     def load_data(self, data=None):
@@ -528,3 +534,27 @@ class MainWindow:
             )
         except Exception as e:
             messagebox.showerror("Error", f"Export failed.\n{e}")
+            
+            
+            
+    def sort_column(self, col, reverse):
+        rows = [
+            (self.table.set(row_id, col), row_id)
+            for row_id in self.table.get_children("")
+        ]
+
+        try:
+            rows.sort(key=lambda x: float(x[0]), reverse=reverse)
+        except ValueError:
+            rows.sort(key=lambda x: x[0].lower(), reverse=reverse)
+
+        for index, (_, row_id) in enumerate(rows):
+            self.table.move(row_id, "", index)
+
+            tag = "even" if index % 2 == 0 else "odd"
+            self.table.item(row_id, tags=(tag,))
+
+        self.table.heading(
+            col,
+            command=lambda: self.sort_column(col, not reverse)
+        )
