@@ -489,7 +489,6 @@ class MainWindow:
         try:
             with pd.ExcelWriter(file_path, engine="openpyxl") as writer:
                 df.to_excel(writer, index=False, sheet_name="Equipment")
-                wb = writer.book
                 ws = writer.sheets["Equipment"]
 
                 ws.insert_rows(1)

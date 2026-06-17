@@ -1,6 +1,5 @@
-import tkinter as tk
 import customtkinter as ctk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 from database.db_manager import add_equipment
 from theme import COLORS
 from tkcalendar import Calendar
@@ -21,38 +20,24 @@ class AddEquipmentForm:
         self.window.title("Add New Equipment")
         self.window.geometry("480x730")
         self.window.resizable(True, True)
-        self.window.configure(bg=COLORS["bg"])
+        self.window.configure(fg_color=COLORS["bg"])
 
         self.setup_header()
         self.setup_form()
 
     def setup_header(self):
-        tk.Frame(self.window, bg=COLORS["primary"], height=5).pack(fill="x")
-        tk.Label(
-            self.window,
-            text="Add New Equipment",
-            font=("Segoe UI", 13, "bold"),
-            bg=COLORS["bg"], fg=COLORS["primary"]
-        ).pack(pady=(15, 5))
+        ctk.CTkFrame(self.window, fg_color=COLORS["primary"], height=5, corner_radius=0).pack(fill="x")
+        ctk.CTkLabel(self.window,text="Add New Equipment",font=ctk.CTkFont("Segoe UI", 13, "bold"),fg_color=COLORS["bg"], text_color=COLORS["primary"]).pack(pady=(15, 5))
 
     def setup_form(self):
-        container = tk.Frame(self.window, bg=COLORS["bg"], padx=30)
-        container.pack(fill="both", expand=True)
+        container = ctk.CTkFrame(self.window, fg_color=COLORS["bg"])
+        container.pack(fill="both", expand=True, padx=30)
 
         def make_label(text):
-            tk.Label(
-                container, text=text,
-                bg=COLORS["bg"], fg=COLORS["text"],
-                font=("Segoe UI", 9), anchor="w"
-            ).pack(fill="x", pady=(8, 1))
+            ctk.CTkLabel(container, text=text,fg_color="transparent", text_color=COLORS["text"],font=ctk.CTkFont("Segoe UI", 9), anchor="w").pack(fill="x", pady=(8, 1))
 
         def make_entry():
-            e = tk.Entry(
-                container,
-                bg=COLORS["entry_bg"], fg=COLORS["text"],
-                insertbackground=COLORS["text"],
-                relief="flat", font=("Segoe UI", 10)
-            )
+            e = ctk.CTkEntry(container, fg_color=COLORS["entry_bg"], text_color=COLORS["text"],border_color=COLORS["border"], font=ctk.CTkFont("Segoe UI", 10))
             e.pack(fill="x", ipady=5)
             return e
 
@@ -72,7 +57,7 @@ class AddEquipmentForm:
         
         make_label("Purchase Date")
 
-        self.purchase_date_var = tk.StringVar(value="")
+        self.purchase_date_var = ctk.StringVar(value="")
 
         date_frame = ctk.CTkFrame(container, fg_color="transparent")
         date_frame.pack(fill="x")
@@ -97,26 +82,34 @@ class AddEquipmentForm:
         ).pack(side="left", padx=(5, 0))
         
         make_label("Status")
-        self.status_var = tk.StringVar(value="Active")
-        ttk.OptionMenu(
-            container, self.status_var,
-            "Active", "Active", "Maintenance", "In Storage"
-        ).pack(fill="x")
+        self.status_var = ctk.StringVar(value="Active")
+        ctk.CTkOptionMenu(
+            container,
+            variable=self.status_var,
+            values=["Active", "Maintenance", "In Storage"],
+            fg_color=COLORS["entry_bg"],
+            button_color=COLORS["primary"],
+            button_hover_color=COLORS["primary_hover"],
+            text_color=COLORS["text"],
+            font=ctk.CTkFont("Segoe UI", 10)
+        ).pack(fill="x", pady=(0, 4))
 
         make_label("Department")
-        self.dept_var = tk.StringVar(value=DEPARTMENTS[0])
-        ttk.OptionMenu(
-            container, self.dept_var,
-            DEPARTMENTS[0], *DEPARTMENTS
-        ).pack(fill="x")
+        self.dept_var = ctk.StringVar(value=DEPARTMENTS[0])
+        ctk.CTkOptionMenu(
+            container,
+            variable=self.dept_var,
+            values=DEPARTMENTS,
+            fg_color=COLORS["entry_bg"],
+            button_color=COLORS["primary"],
+            button_hover_color=COLORS["primary_hover"],
+            text_color=COLORS["text"],
+            font=ctk.CTkFont("Segoe UI", 10)
+        ).pack(fill="x", pady=(0, 4))
 
-        tk.Button(
-            container, text="Save Equipment",
-            command=self.save,
-            bg=COLORS["primary"], fg="white",
-            relief="flat", font=("Segoe UI", 11, "bold"),
-            cursor="hand2"
-        ).pack(fill="x", pady=20, ipady=8)
+        ctk.CTkButton(container, text="Save Equipment",command=self.save,fg_color=COLORS["primary"], text_color="white",
+              hover_color=COLORS["primary_hover"],
+              font=ctk.CTkFont("Segoe UI", 11, "bold")).pack(fill="x", pady=20, ipady=8)
 
     def open_calendar(self):
         top = ctk.CTkToplevel(self.window)
