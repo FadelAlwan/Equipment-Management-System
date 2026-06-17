@@ -1,26 +1,21 @@
 COLORS = {
-    # Main backgrounds
-    "bg": "#1e1e1e",
-    "surface": "#252526",
-    "surface_light": "#2d2d30",
-
-    # Accent colors
-    "primary": "#0e639c",
-    "success": "#2ea043",
-    "danger": "#f14c4c",
-    "warning": "#1D6F42",
-
-    # Text
-    "text": "#d4d4d4",
-    "text_dim": "#9e9e9e",
-
-    # Inputs
-    "entry_bg": "#3c3c3c",
-    "entry_border": "#464647",
-
-    # Table selection
-    "selection": "#264f78",
-
-    # Misc
-    "border": "#3c3c3c"
+    "sidebar_bg":     "#151515",
+    "sidebar_hover":  "#2a2a2a",
+    "sidebar_active": "#0085D0",
+    "bg":             "#1e1e1e",
+    "surface":        "#252526",
+    "surface_light":  "#2d2d2d",
+    "card_bg":        "#2d2d2d",
+    "primary":        "#0085D0",
+    "primary_hover":  "#006dab",
+    "success":        "#2ea043",
+    "danger":         "#e53935",
+    "warning":        "#d97706",
+    "maintenance":    "#d4a017",
+    "text":           "#f0f0f0",
+    "text_dim":       "#9e9e9e",
+    "text_sidebar":   "#c0c0c0",
+    "entry_bg":       "#3c3c3c",
+    "border":         "#3c3c3c",
+    "selection":      "#264f78",
 }

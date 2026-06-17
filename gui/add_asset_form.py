@@ -1,4 +1,5 @@
 import tkinter as tk
+import customtkinter as ctk
 from tkinter import ttk, messagebox
 from database.db_manager import add_equipment
 from theme import COLORS
@@ -14,7 +15,8 @@ class AddEquipmentForm:
     def __init__(self, parent, on_save_callback):
         self.on_save_callback = on_save_callback
 
-        self.window = tk.Toplevel(parent)
+        self.window = ctk.CTkToplevel(parent)
+        self.window.after(200, self.window.lift)
         self.window.title("Add New Equipment")
         self.window.geometry("480x730")
         self.window.resizable(True, True)
@@ -67,7 +69,6 @@ class AddEquipmentForm:
             make_label(label)
             self.entries[key] = make_entry()
 
-        # Status dropdown
         make_label("Status")
         self.status_var = tk.StringVar(value="Active")
         ttk.OptionMenu(
@@ -75,7 +76,6 @@ class AddEquipmentForm:
             "Active", "Active", "Maintenance", "In Storage"
         ).pack(fill="x")
 
-        # Department dropdown
         make_label("Department")
         self.dept_var = tk.StringVar(value=DEPARTMENTS[0])
         ttk.OptionMenu(

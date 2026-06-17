@@ -1,4 +1,5 @@
 import tkinter as tk
+import customtkinter as ctk
 from tkinter import ttk, messagebox
 from database.db_manager import update_equipment, get_equipment_by_id
 from theme import COLORS
@@ -6,8 +7,7 @@ import sqlite3
 
 
 DEPARTMENTS = [
-    "IT", "HR", "Finance", "Operations", "Other"
-]
+    "IT", "HR", "Finance", "Operations", "Other"]
 
 
 class EditEquipmentForm:
@@ -20,7 +20,8 @@ class EditEquipmentForm:
             messagebox.showerror("Error", "Equipment not found.")
             return
 
-        self.window = tk.Toplevel(parent)
+        self.window = ctk.CTkToplevel(parent)
+        self.window.after(200, self.window.lift)
         self.window.title("Edit Equipment")
         self.window.geometry("480x730")
         self.window.resizable(True, True)
@@ -75,7 +76,6 @@ class EditEquipmentForm:
             make_label(label)
             self.entries[key] = make_entry(value)
 
-        # Status dropdown
         make_label("Status")
         self.status_var = tk.StringVar(value=self.data[6])
         ttk.OptionMenu(
@@ -83,7 +83,6 @@ class EditEquipmentForm:
             self.data[6], "Active", "Maintenance", "In Storage"
         ).pack(fill="x")
 
-        # Department dropdown
         make_label("Department")
         current_dept = self.data[7] if self.data[7] in DEPARTMENTS else DEPARTMENTS[0]
         self.dept_var = tk.StringVar(value=current_dept)
