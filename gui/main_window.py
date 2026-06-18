@@ -1,6 +1,5 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox, filedialog
-import tkinter as tk
 import pandas as pd
 from database.db_manager import (
     get_all_equipment,
@@ -18,7 +17,7 @@ class MainWindow:
     def __init__(self, root):
         self.root = root
         self.root.title("IT Equipment Manager")
-        self.root.geometry("1280x720")
+        self.root.geometry("1400x800")
         self.root.configure(fg_color=COLORS["bg"])
 
         self.setup_layout()

@@ -10,6 +10,10 @@ DEPARTMENTS = [
     "IT", "HR", "Finance", "Operations", "Other"
 ]
 
+EQUIPMENT_TYPES = [
+    "Laptop","Desktop PC","Monitor","Printer","Router","UPS","Server","Access Point","Scanner","Projector","Other"
+]
+
 
 class AddEquipmentForm:
     def __init__(self, parent, on_save_callback):
@@ -43,9 +47,31 @@ class AddEquipmentForm:
 
         self.entries = {}
 
+        make_label("Equipment Type *")
+
+        self.asset_type_var = ctk.StringVar(
+            value=EQUIPMENT_TYPES[0]
+        )
+
+        self.asset_type_combo = ctk.CTkOptionMenu(
+            container,
+            values=EQUIPMENT_TYPES,
+            variable=self.asset_type_var,
+            fg_color=COLORS["entry_bg"],
+            button_color=COLORS["primary"],
+            button_hover_color=COLORS["primary_hover"],
+            text_color=COLORS["text"],
+            font=ctk.CTkFont("Segoe UI", 12)
+        )
+
+        self.asset_type_combo.pack(
+            fill="x",
+            pady=(0, 4)
+        )
+        
+
         for label, key in [
             ("Asset Tag *",              "asset_tag"),
-            ("Equipment Type *",         "asset_type"),
             ("Brand",                    "brand"),
             ("Model",                    "model"),
             ("Serial Number",            "serial_number"),
@@ -54,11 +80,9 @@ class AddEquipmentForm:
             make_label(label)
             self.entries[key] = make_entry()
 
-        
+
         make_label("Purchase Date")
-
         self.purchase_date_var = ctk.StringVar(value="")
-
         date_frame = ctk.CTkFrame(container, fg_color="transparent")
         date_frame.pack(fill="x")
 
@@ -150,7 +174,7 @@ class AddEquipmentForm:
             
     def save(self):
         asset_tag  = self.entries["asset_tag"].get().strip()
-        asset_type = self.entries["asset_type"].get().strip()
+        asset_type = self.asset_type_combo.get()
 
         if not asset_tag or not asset_type:
             messagebox.showerror("Missing Fields",
