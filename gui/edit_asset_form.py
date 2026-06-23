@@ -69,8 +69,9 @@ class EditEquipmentForm:
 
         make_label("Equipment Type *")
 
+        current_type = self.data[2]
         self.asset_type_var = ctk.StringVar(
-            value=EQUIPMENT_TYPES[0]
+            value=current_type
         )
 
         self.asset_type_combo = ctk.CTkOptionMenu(
