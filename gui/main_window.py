@@ -200,7 +200,7 @@ class MainWindow:
             command=self.apply_status_filter
         ).place(x=560, rely=0.5, anchor="w")
 
-        ctk.CTkButton(
+        self.edit_btn = ctk.CTkButton(
             topbar,
             text="✎  Edit",
             width=90,
@@ -210,9 +210,10 @@ class MainWindow:
             hover_color=COLORS["primary_hover"],
             font=ctk.CTkFont("Segoe UI", 12, "bold"),
             command=self.open_edit_form
-        ).place(relx=0.82, rely=0.5, anchor="w")
+        )
+        self.edit_btn.place(relx=0.82, rely=0.5, anchor="w")
 
-        ctk.CTkButton(
+        self.delete_btn = ctk.CTkButton(
             topbar,
             text="✕  Delete",
             width=100,
@@ -222,7 +223,8 @@ class MainWindow:
             hover_color="#c62828",
             font=ctk.CTkFont("Segoe UI", 12, "bold"),
             command=self.delete_selected
-        ).place(relx=0.91, rely=0.5, anchor="w")
+        )
+        self.delete_btn.place(relx=0.91, rely=0.5, anchor="w")
 
         self.content = ctk.CTkFrame(
             self.main,
@@ -289,10 +291,14 @@ class MainWindow:
         self.table_frame.pack_forget()
         self.dashboard_frame.pack(fill="both", expand=True)
         self.refresh_dashboard()
+        self.edit_btn.place_forget()
+        self.delete_btn.place_forget()
 
     def show_equipment_view(self):
         self.dashboard_frame.pack_forget()
         self.table_frame.pack(fill="both", expand=True)
+        self.edit_btn.place(relx=0.82, rely=0.5, anchor="w")
+        self.delete_btn.place(relx=0.91, rely=0.5, anchor="w")
 
     def refresh_dashboard(self):
         stats = get_statistics()
