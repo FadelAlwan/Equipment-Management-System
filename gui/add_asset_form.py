@@ -1,19 +1,30 @@
 import customtkinter as ctk
 from tkinter import messagebox
-from database.db_manager import add_equipment
+from database.db_manager import add_equipment, get_next_asset_tag
 from theme import COLORS
 from tkcalendar import Calendar
 import sqlite3
 
 
 DEPARTMENTS = [
-    "IT", "HR", "Finance", "Operations", "Other"
-]
+    "IT", "HR", "Finance", "Operations", "Other"]
 
 EQUIPMENT_TYPES = [
-    "Laptop","Desktop PC","Monitor","Printer","Router","UPS","Server","Access Point","Scanner","Projector","Other"
-]
+    "💻Laptop","Desktop PC","Monitor","Printer","Router","UPS","Server","Access Point","Scanner","Projector","Other"]
 
+TYPE_PREFIX = {
+    "Laptop": "LAP",
+    "Desktop PC": "PC",
+    "Monitor": "MON",
+    "Printer": "PRN",
+    "Router": "RTR",
+    "UPS": "UPS",
+    "Server": "SRV",
+    "Access Point": "AP",
+    "Scanner": "SCN",
+    "Projector": "PRJ",
+    "Other": "MISC"
+}
 
 class AddEquipmentForm:
     def __init__(self, parent, on_save_callback):
@@ -57,6 +68,7 @@ class AddEquipmentForm:
             container,
             values=EQUIPMENT_TYPES,
             variable=self.asset_type_var,
+            command=self.on_type_changed,
             fg_color=COLORS["entry_bg"],
             button_color=COLORS["primary"],
             button_hover_color=COLORS["primary_hover"],
@@ -79,7 +91,11 @@ class AddEquipmentForm:
         ]:
             make_label(label)
             self.entries[key] = make_entry()
-
+            
+            
+        self.on_type_changed(
+            self.asset_type_var.get()
+        )
 
         make_label("Purchase Date")
         self.purchase_date_var = ctk.StringVar(value="")
@@ -135,6 +151,34 @@ class AddEquipmentForm:
               hover_color=COLORS["primary_hover"],
               font=ctk.CTkFont("Segoe UI", 13, "bold")).pack(fill="x", pady=20, ipady=8)
 
+    def on_type_changed(self, selected_type):
+
+        prefix = TYPE_PREFIX.get(
+            selected_type,
+            "AST"
+        )
+
+        new_tag = get_next_asset_tag(prefix)
+
+        current_value = self.entries["asset_tag"].get().strip()
+
+        if (
+            not current_value
+            or current_value.startswith(
+                tuple(TYPE_PREFIX.values())
+            )
+        ):
+            self.entries["asset_tag"].delete(
+                0,
+                "end"
+            )
+
+            self.entries["asset_tag"].insert(
+                0,
+                new_tag
+            )
+    
+    
     def open_calendar(self):
         top = ctk.CTkToplevel(self.window)
         top.title("Select Date")

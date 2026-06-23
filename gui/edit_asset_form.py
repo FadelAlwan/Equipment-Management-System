@@ -10,8 +10,21 @@ DEPARTMENTS = [
     "IT", "HR", "Finance", "Operations", "Other"]
 
 EQUIPMENT_TYPES = [
-    "Laptop","Desktop PC","Monitor","Printer","Router","UPS","Server","Access Point","Scanner","Projector","Other"
-]
+    "Laptop","Desktop PC","Monitor","Printer","Router","UPS","Server","Access Point","Scanner","Projector","Other"]
+
+TYPE_PREFIX = {
+    "Laptop": "LAP",
+    "Desktop PC": "PC",
+    "Monitor": "MON",
+    "Printer": "PRN",
+    "Router": "RTR",
+    "UPS": "UPS",
+    "Server": "SRV",
+    "Access Point": "AP",
+    "Scanner": "SCN",
+    "Projector": "PRJ",
+    "Other": "MISC"
+}
 
 
 class EditEquipmentForm:

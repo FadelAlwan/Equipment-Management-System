@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import re
 
 def get_db_path():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -107,3 +108,34 @@ def get_statistics():
             "maintenance": row[2] or 0,
             "storage":     row[3] or 0,
         }
+        
+        
+def get_next_asset_tag(prefix):
+    with sqlite3.connect(get_db_path()) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT asset_tag FROM equipment WHERE asset_tag LIKE ?",
+            (f"{prefix}-%",)
+        )
+
+        rows = cursor.fetchall()
+
+        max_number = 0
+
+        for row in rows:
+            tag = row[0]
+
+            match = re.search(
+                rf"{prefix}-(\d+)$",
+                tag
+            )
+
+            if match:
+                number = int(match.group(1))
+                max_number = max(
+                    max_number,
+                    number
+                )
+
+        return f"{prefix}-{max_number + 1:03d}"
