@@ -1,9 +1,14 @@
 import sqlite3
 import os
 import re
+import sys
 
 def get_db_path():
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    if getattr(sys, 'frozen', False):
+        base_dir = os.path.dirname(sys.executable)
+    else:
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_dir, "equipment.db")
 
 def add_equipment(asset_tag, asset_type, brand, model, serial_number,
