@@ -20,7 +20,7 @@ Built as an internship project.
 ## Installation
 
 ### Option A — Run the .exe (Windows)
-1. Download `IT Equipment Manager.exe` from [Releases]
+1. Download **IT Equipment Manager.exe** from [Releases](../../releases).
 2. Run it — no installation needed
 3. `equipment.db` is created automatically next to the .exe
 
