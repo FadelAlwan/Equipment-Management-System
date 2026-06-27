@@ -34,20 +34,6 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## Project Structure
-it-asset-manager/
-
-├── main.py              # Entry point
-├── theme.py             # Color theme
-├── database/
-│   ├── db_setup.py      # Database creation
-│   └── db_manager.py    # CRUD operations
-├── gui/
-│   ├── main_window.py   # Main window
-│   ├── add_asset_form.py
-│   └── edit_asset_form.py
-└── utils/
-
 ## Screenshots
 
 ## License
