@@ -2,7 +2,6 @@
 models/logo.ico
 *.xlsx
 .vscode/
-
 __pycache__/
 *.py[codz]
 *$py.class
